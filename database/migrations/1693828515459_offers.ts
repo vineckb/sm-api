@@ -1,20 +1,21 @@
 import BaseSchema from '@ioc:Adonis/Lucid/Schema'
 
 export default class extends BaseSchema {
-  protected tableName = 'products'
+  protected tableName = 'offers'
 
   public async up() {
     this.schema.createTable(this.tableName, (table) => {
       table.increments('id')
-      table.string('title').notNullable()
-      table.string('sku').notNullable().unique()
-      table.string('barcode').notNullable().unique()
-      table.decimal('price', 10, 2).notNullable()
-      table.string('external_id').unique()
-      table.integer('quantity_stock').defaultTo(0)
-      table.integer('quantity_locked').defaultTo(0)
 
-      table.timestamp('sync_at', { useTz: true })
+      table.boolean('status').defaultTo(true)
+      table.integer('product_id').notNullable()
+      table.decimal('price', 10, 2).notNullable()
+      table.datetime('starts_at')
+      table.datetime('ends_at')
+
+      /**
+       * Uses timestamptz for PostgreSQL and DATETIME2 for MSSQL
+       */
       table.timestamp('created_at', { useTz: true })
       table.timestamp('updated_at', { useTz: true })
     })
