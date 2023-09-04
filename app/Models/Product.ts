@@ -28,7 +28,7 @@ export default class Product extends BaseModel {
   public quantityLocked: number
 
   @column.dateTime()
-  public syncAt: DateTime
+  public syncedAt: DateTime
 
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime

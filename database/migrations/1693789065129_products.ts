@@ -14,7 +14,7 @@ export default class extends BaseSchema {
       table.integer('quantity_stock').defaultTo(0)
       table.integer('quantity_locked').defaultTo(0)
 
-      table.timestamp('sync_at', { useTz: true })
+      table.timestamp('synced_at', { useTz: true })
       table.timestamp('created_at', { useTz: true })
       table.timestamp('updated_at', { useTz: true })
     })
