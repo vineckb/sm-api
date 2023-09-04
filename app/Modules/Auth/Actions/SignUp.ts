@@ -37,6 +37,7 @@ export default class SignUp {
       })
 
       data.merchantId = merchant.id
+      delete data.merchantName
     }
     const newUser = await User.create(data)
     const token = await auth.use('api').generate(newUser)
