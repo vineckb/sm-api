@@ -9,3 +9,4 @@ Route.group(() => {
 })
   .prefix('products')
   .namespace('App/Modules/Product/Actions')
+  .middleware(['auth'])
