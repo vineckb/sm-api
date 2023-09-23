@@ -1,4 +1,4 @@
-import User from 'App/Models/User'
+import Product from 'App/Models/Product'
 
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import { schema, rules } from '@ioc:Adonis/Core/Validator'
@@ -7,8 +7,9 @@ export default class UpdateProduct {
   public async handle({ request, params }: HttpContextContract) {
     const { id } = params
 
-    const newUserSchema = schema.create({
+    const validationSchema = schema.create({
       title: schema.string(),
+      section_id: schema.number(),
       sku: schema.string([rules.unique({ table: 'products', column: 'sku', whereNot: { id } })]),
       barcode: schema.string([
         rules.unique({ table: 'products', column: 'barcode', whereNot: { id } }),
@@ -16,10 +17,10 @@ export default class UpdateProduct {
       price: schema.number(),
     })
 
-    const data = await request.validate({ schema: newUserSchema })
+    const data = await request.validate({ schema: validationSchema })
 
-    await User.query().where('id', id).update(data)
+    await Product.query().where('id', id).update(data)
 
-    return await User.findOrFail(id)
+    return await Product.findOrFail(id)
   }
 }

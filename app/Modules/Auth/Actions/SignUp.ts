@@ -8,38 +8,39 @@ export default class SignUp {
   public async handle({ request, auth, response }: HttpContextContract) {
     const newUserSchema = schema.create({
       merchantId: schema.number.optional(),
-      merchantName: schema.string.optional(),
       name: schema.string(),
       email: schema.string([rules.unique({ table: 'users', column: 'email' })]),
       username: schema.string([rules.unique({ table: 'users', column: 'username' })]),
       password: schema.string(),
-      role: schema.enum(['master', 'merchant', 'manager', 'contributor', 'customer'] as const),
+      role: schema.enum([
+        'master',
+        'merchant',
+        'supervisor',
+        'delivery',
+        'bagger',
+        'customer',
+      ] as const),
     })
 
     const data = await request.validate({ schema: newUserSchema })
+    const newUser = await User.create(data)
 
-    if (!data.merchantId) {
-      if (!data.merchantName) {
-        return response.status(422).send({
-          errors: [
-            {
-              rule: 'required',
-              field: 'merchantName',
-              message: 'required validation failed',
-            },
-          ],
-        })
-      }
+    if (data.role === 'merchant') {
+      const newMerchantSchema = schema.create({
+        merchantName: schema.string(),
+      })
+      const { merchantName } = await request.validate({ schema: newMerchantSchema })
 
       const merchant = await Merchant.create({
-        name: data.merchantName,
-        slug: slugify(data.merchantName),
+        name: merchantName,
+        slug: slugify(merchantName),
+        master: newUser.id,
       })
 
-      data.merchantId = merchant.id
-      delete data.merchantName
+      newUser.merchantId = merchant.id
+      await newUser.save()
     }
-    const newUser = await User.create(data)
+
     const token = await auth.use('api').generate(newUser)
 
     return { token }

@@ -10,6 +10,9 @@ export default class Product extends BaseModel {
   public title: string
 
   @column()
+  public sectionId: number
+
+  @column()
   public sku: string
 
   @column()

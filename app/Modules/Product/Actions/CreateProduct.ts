@@ -7,6 +7,7 @@ export default class CreateProduct {
   public async handle({ request }: HttpContextContract) {
     const newProductSchema = schema.create({
       title: schema.string(),
+      sectionId: schema.number(),
       sku: schema.string([rules.unique({ table: 'products', column: 'sku' })]),
       barcode: schema.string([rules.unique({ table: 'products', column: 'barcode' })]),
       price: schema.number(),

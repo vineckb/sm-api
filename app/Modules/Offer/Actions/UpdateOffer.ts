@@ -1,24 +1,41 @@
-import User from 'App/Models/User'
-
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
-import { schema } from '@ioc:Adonis/Core/Validator'
+import { schema, rules } from '@ioc:Adonis/Core/Validator'
+import Offer from 'App/Models/Offer'
 
 export default class UpdateOffer {
   public async handle({ request, params }: HttpContextContract) {
     const { id } = params
 
-    const newUserSchema = schema.create({
-      productId: schema.number(),
-      price: schema.number(),
-      status: schema.boolean(),
+    const offer = await Offer.findOrFail(id)
+
+    const offerValidationSchema = schema.create({
+      title: schema.string(),
+      active: schema.boolean.optional(),
       startsAt: schema.date(),
       endsAt: schema.date(),
     })
 
-    const data = await request.validate({ schema: newUserSchema })
+    const offerData = await request.validate({ schema: offerValidationSchema })
+    offer.merge(offerData)
+    await offer.save()
 
-    await User.query().where('id', id).update(data)
+    const productsValidationSchema = schema.create({
+      products: schema.array([rules.minLength(1)]).members(
+        schema.object().members({
+          productId: schema.number(),
+          promotionalPrice: schema.number(),
+        })
+      ),
+    })
+    const { products } = await request.validate({ schema: productsValidationSchema })
+    await offer.related('products').detach()
 
-    return await User.findOrFail(id)
+    await offer.related('products').attach(
+      products.reduce((acc, curr) => {
+        return { ...acc, [curr.productId]: { promotionalPrice: curr.promotionalPrice } }
+      }, {})
+    )
+
+    return { ...offer.toJSON(), products }
   }
 }

@@ -1,8 +1,16 @@
-import User from 'App/Models/User'
+import Offer from 'App/Models/Offer'
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 
 export default class FindOffer {
   public async handle({ params }: HttpContextContract) {
-    return await User.findOrFail(params.id)
+    const offer = await Offer.query().preload('products').firstOrFail()
+
+    return {
+      ...offer.toJSON(),
+      products: offer.products.map((product) => ({
+        ...product.toJSON(),
+        promotionalPrice: product.$extras.pivot_promotionalPrice,
+      })),
+    }
   }
 }

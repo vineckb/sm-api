@@ -5,6 +5,7 @@ Route.group(() => {
   Route.get('', 'ListUsers')
   Route.get('/:id', 'FindUser')
   Route.put('/:id', 'UpdateUser')
+  Route.patch('/:id', 'PatchUser')
   Route.delete('/:id', 'DeleteUser')
 })
   .prefix('/users')

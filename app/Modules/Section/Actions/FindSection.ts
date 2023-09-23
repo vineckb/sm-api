@@ -1,8 +1,8 @@
-import User from 'App/Models/User'
+import Section from 'App/Models/Section'
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 
-export default class DeleteUser {
+export default class FindSection {
   public async handle({ params }: HttpContextContract) {
-    await User.query().where('id', params.id).delete()
+    return await Section.findOrFail(params.id)
   }
 }
