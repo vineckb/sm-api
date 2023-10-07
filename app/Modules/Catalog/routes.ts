@@ -4,4 +4,4 @@ Route.group(() => {
   Route.get('offers', 'TodayOffers')
 })
   .namespace('App/Modules/Catalog/Actions')
-  .prefix('catalog/')
+  .prefix('catalog')
