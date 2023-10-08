@@ -9,9 +9,6 @@ export default class UpdateUser {
 
     const newUserSchema = schema.create({
       name: schema.string(),
-      username: schema.string([
-        rules.unique({ table: 'users', column: 'username', whereNot: { id } }),
-      ]),
       email: schema.string([rules.unique({ table: 'users', column: 'email', whereNot: { id } })]),
       role: schema.enum(['master', 'merchant', 'manager', 'contributor', 'customer'] as const),
     })

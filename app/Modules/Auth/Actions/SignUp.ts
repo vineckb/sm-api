@@ -10,7 +10,6 @@ export default class SignUp {
       merchantId: schema.number.optional(),
       name: schema.string(),
       email: schema.string([rules.unique({ table: 'users', column: 'email' })]),
-      username: schema.string([rules.unique({ table: 'users', column: 'username' })]),
       password: schema.string(),
       role: schema.enum([
         'master',

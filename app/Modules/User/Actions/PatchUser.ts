@@ -6,7 +6,7 @@ export default class PatchUser {
   public async handle({ request, params }: HttpContextContract) {
     const { id } = params
 
-    const body = request.only(['name', 'username', 'email', 'role'])
+    const body = request.only(['name', 'email', 'role'])
 
     await User.query().where('id', id).update(body)
 
