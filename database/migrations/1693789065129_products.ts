@@ -8,7 +8,7 @@ export default class extends BaseSchema {
       table.increments('id')
       table.integer('section_id').notNullable()
       table.string('title').notNullable()
-      table.string('sku').notNullable().unique()
+      table.string('image_url')
       table.string('barcode').notNullable().unique()
       table.decimal('price', 10, 2).notNullable()
       table.string('external_id').unique()

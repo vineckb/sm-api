@@ -13,7 +13,7 @@ export default class Product extends BaseModel {
   public sectionId: number
 
   @column()
-  public sku: string
+  public imageUrl: string
 
   @column()
   public barcode: string
