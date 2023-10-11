@@ -28,9 +28,4 @@ export default class Offer extends BaseModel {
 
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   public updatedAt: DateTime
-
-  @hasOne(() => Product, {
-    foreignKey: 'id',
-  })
-  public product: HasOne<typeof Product>
 }
