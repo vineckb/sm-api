@@ -15,10 +15,10 @@ export default class ListProducts {
 
     const q = request.input('q')
     const page = input.page && input.page > 1 ? input.page : 1
-    const limit = input.limit && input.limit > 0 ? input.limit : 10
+    const limit = input.limit && input.limit > 0 ? input.limit : 100
 
     const query = Product.query()
-      .limit(10)
+      .limit(limit)
       .offset((page - 1) * limit)
 
     if (q) {

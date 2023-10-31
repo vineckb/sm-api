@@ -1,25 +1,42 @@
+import { v4 as uuid } from 'uuid'
 import Product from 'App/Models/Product'
-
+import Application from '@ioc:Adonis/Core/Application'
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import { schema, rules } from '@ioc:Adonis/Core/Validator'
+import Drive from '@ioc:Adonis/Core/Drive'
 
 export default class UpdateProduct {
   public async handle({ request, params }: HttpContextContract) {
     const { id } = params
 
-    const validationSchema = schema.create({
+    const updateProductSchema = schema.create({
       title: schema.string(),
-      section_id: schema.number(),
-      sku: schema.string([rules.unique({ table: 'products', column: 'sku', whereNot: { id } })]),
+      sectionId: schema.number(),
       barcode: schema.string([
         rules.unique({ table: 'products', column: 'barcode', whereNot: { id } }),
       ]),
       price: schema.number(),
+      externalId: schema.string.optional(),
+      newImage: schema.file.optional({
+        size: '2mb',
+        extnames: ['jpg', 'gif', 'png'],
+      }),
     })
 
-    const data = await request.validate({ schema: validationSchema })
+    const { newImage, ...data } = await request.validate({ schema: updateProductSchema })
 
-    await Product.query().where('id', id).update(data)
+    let imageUrl = ''
+
+    if (newImage) {
+      await newImage.move(Application.publicPath('uploads'), {
+        name: `${uuid()}.${newImage.extname}`,
+      })
+      imageUrl = await Drive.getUrl(newImage.fileName as string)
+    }
+
+    await Product.query()
+      .where('id', id)
+      .update({ ...data, imageUrl: imageUrl || undefined })
 
     return await Product.findOrFail(id)
   }
