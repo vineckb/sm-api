@@ -24,10 +24,7 @@ export default class ListProducts {
     if (q) {
       query.where((query) => {
         const searchPattern = `%${q}%`
-        query
-          .whereILike('title', searchPattern)
-          .orWhereILike('sku', searchPattern)
-          .orWhereILike('barcode', searchPattern)
+        query.whereILike('title', searchPattern).orWhereILike('barcode', searchPattern)
       })
     }
 
@@ -35,7 +32,9 @@ export default class ListProducts {
       query.where('sectionId', input.sectionId)
     }
 
-    const products = await query.select('*')
+    query.orderByRaw('promotional_price = 0 nulls last, promotional_price')
+
+    const products = await query.preload('section').select('*')
 
     return products
   }

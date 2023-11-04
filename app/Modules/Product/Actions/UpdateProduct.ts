@@ -16,6 +16,7 @@ export default class UpdateProduct {
         rules.unique({ table: 'products', column: 'barcode', whereNot: { id } }),
       ]),
       price: schema.number(),
+      promotionalPrice: schema.number.optional(),
       externalId: schema.string.optional(),
       newImage: schema.file.optional({
         size: '2mb',

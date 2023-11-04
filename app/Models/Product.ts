@@ -1,31 +1,49 @@
 import { DateTime } from 'luxon'
-import { BaseModel, HasMany, column, hasMany } from '@ioc:Adonis/Lucid/Orm'
-import Offer from './Offer'
+import { BaseModel, HasOne, column, hasOne } from '@ioc:Adonis/Lucid/Orm'
+import Section from './Section'
 
 export default class Product extends BaseModel {
   @column({ isPrimary: true })
   public id: number
 
   @column()
-  public title: string
-
-  @column()
-  public sectionId: number
-
-  @column()
-  public imageUrl: string
+  public active: boolean
 
   @column()
   public barcode: string
 
   @column()
+  public sectionId: number
+
+  @hasOne(() => Section, {
+    localKey: 'sectionId',
+    foreignKey: 'id',
+  })
+  public section: HasOne<typeof Section>
+
+  @column()
+  public title: string
+
+  @column()
+  public imageUrl: string
+
+  @column()
   public price: number
 
   @column()
-  public externalId: string
+  public promotionalPrice: number
+
+  @column()
+  public packSize: number
+
+  @column()
+  public quantityUnity: string
 
   @column()
   public quantityStock: number
+
+  @column()
+  public quantitySold: number
 
   @column()
   public quantityLocked: number
@@ -38,7 +56,4 @@ export default class Product extends BaseModel {
 
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   public updatedAt: DateTime
-
-  @hasMany(() => Offer)
-  public offers: HasMany<typeof Offer>
 }

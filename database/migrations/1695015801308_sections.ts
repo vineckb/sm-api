@@ -8,6 +8,7 @@ export default class extends BaseSchema {
       table.increments('id')
 
       table.boolean('active').defaultTo(true)
+      table.boolean('stared').defaultTo(false)
       table.string('title').notNullable()
 
       table.timestamp('created_at', { useTz: true })

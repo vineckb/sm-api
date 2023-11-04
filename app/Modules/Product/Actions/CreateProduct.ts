@@ -12,6 +12,7 @@ export default class CreateProduct {
       sectionId: schema.number(),
       barcode: schema.string([rules.unique({ table: 'products', column: 'barcode' })]),
       price: schema.number(),
+      promotionalPrice: schema.number.optional(),
       externalId: schema.string.optional(),
       newImage: schema.file.optional({
         size: '2mb',

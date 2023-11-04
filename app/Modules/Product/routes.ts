@@ -5,6 +5,8 @@ Route.group(() => {
   Route.get('', 'ListProducts')
   Route.get('/:id', 'FindProduct')
   Route.put('/:id', 'UpdateProduct')
+  Route.put('/:id/price', 'UpdatePrice')
+  Route.put('/:id/promotional-price', 'UpdatePromotionalPrice')
   Route.delete('/:id', 'DeleteProduct')
 })
   .prefix('products')
