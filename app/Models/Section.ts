@@ -22,7 +22,7 @@ export default class Section extends BaseModel {
   public updatedAt: DateTime
 
   @hasMany(() => Product, {
-    foreignKey: 'section_id',
+    foreignKey: 'sectionId',
     localKey: 'id',
   })
   public products: HasMany<typeof Product>
