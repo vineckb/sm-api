@@ -7,7 +7,7 @@ export default class extends BaseSchema {
     this.schema.createTable(this.tableName, (table) => {
       table.increments('id')
       table.boolean('active').defaultTo(true)
-      table.string('barcode').notNullable().unique()
+      table.string('barcode') //.notNullable().unique()
 
       table.integer('section_id').notNullable()
       table.string('title').notNullable()
