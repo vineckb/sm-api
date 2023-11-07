@@ -8,13 +8,17 @@ export default class FeaturedSections {
       .where('active', true)
       .where('stared', true)
       .preload('products', (productsQuery) => {
-        productsQuery.where('active', true).andWhereRaw('quantity_stock - quantity_locked > 0')
+        productsQuery
+          .where('active', true)
+          .andWhereRaw('quantity_stock - quantity_locked > 0')
+          .limit(30)
       })
 
     const offers = await Product.query()
       .where('promotionalPrice', '>=', 0.01)
       .andWhere('active', true)
       .andWhereRaw('quantity_stock - quantity_locked > 0')
+      .limit(30)
 
     return [
       {
