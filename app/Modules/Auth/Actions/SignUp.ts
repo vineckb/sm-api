@@ -5,7 +5,7 @@ import Merchant from 'App/Models/Merchant'
 import slugify from 'slugify'
 
 export default class SignUp {
-  public async handle({ request, auth, response }: HttpContextContract) {
+  public async handle({ request, auth }: HttpContextContract) {
     const newUserSchema = schema.create({
       merchantId: schema.number.optional(),
       name: schema.string(),

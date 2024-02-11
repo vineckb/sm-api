@@ -2,7 +2,7 @@ import Offer from 'App/Models/Offer'
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 
 export default class FindOffer {
-  public async handle({ params }: HttpContextContract) {
+  public async handle(_: HttpContextContract) {
     const offer = await Offer.query().preload('products').firstOrFail()
 
     return {

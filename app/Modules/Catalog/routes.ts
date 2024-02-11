@@ -1,7 +1,7 @@
 import Route from '@ioc:Adonis/Core/Route'
 
 Route.group(() => {
-  Route.get('featured-sections', 'FeaturedSections')
+  Route.get('offers', 'Offers')
   Route.get('sections', 'ListSections')
   Route.get('sections/:id', 'ShowSection')
 })
